@@ -48,14 +48,14 @@ func HttpGetE(t *testing.T, url string, tlsConfig *tls.Config) (int, string, err
 		return -1, "", err
 	}
 
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	//defer resp.Body.Close()
+	//body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
 		return -1, "", err
 	}
 
-	return resp.StatusCode, strings.TrimSpace(string(body)), nil
+	return resp.StatusCode, nil
 }
 
 // HttpGetWithValidation performs an HTTP GET on the given URL and verify that you get back the expected status code and body. If either
