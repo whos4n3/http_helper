@@ -69,8 +69,8 @@ func HttpGetWithValidation(t *testing.T, url string, tlsConfig *tls.Config, expe
 
 // HttpGetWithValidationE performs an HTTP GET on the given URL and verify that you get back the expected status code and body. If either
 // doesn't match, return an error.
-func HttpGetWithValidationE(t *testing.T, url string, tlsConfig *tls.Config, expectedStatusCode int, expectedBody string) error {
-	return HttpGetWithCustomValidationE(t, url, tlsConfig, func(statusCode int, body string) bool {
+func HttpGetWithValidationE(t *testing.T, url string, tlsConfig *tls.Config, expectedStatusCode int) error {
+	return HttpGetWithCustomValidationE(t, url, tlsConfig, func(statusCode int) bool {
 		return statusCode == expectedStatusCode && body == expectedBody
 	})
 }
