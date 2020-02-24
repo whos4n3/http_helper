@@ -48,14 +48,14 @@ func HttpGetE(t *testing.T, url string, tlsConfig *tls.Config) (int, string, err
 		return -1, "", err
 	}
 
-	//defer resp.Body.Close()
-	//body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
 		return -1, "", err
 	}
 
-	return resp.StatusCode, nil
+	return resp.StatusCode, strings.TrimSpace(string(body)), nil
 }
 
 // HttpGetWithValidation performs an HTTP GET on the given URL and verify that you get back the expected status code and body. If either
@@ -109,9 +109,9 @@ func HttpGetWithRetry(t *testing.T, url string, tlsConfig *tls.Config, expectedS
 
 // HttpGetWithRetryE repeatedly performs an HTTP GET on the given URL until the given status code and body are returned or until max
 // retries has been exceeded.
-func HttpGetWithRetryE(t *testing.T, url string, tlsConfig *tls.Config, expectedStatus int, expectedBody string, retries int, sleepBetweenRetries time.Duration) error {
+func HttpGetWithRetryE(t *testing.T, url string, tlsConfig *tls.Config, expectedStatus int, retries int, sleepBetweenRetries time.Duration) error {
 	_, err := retry.DoWithRetryE(t, fmt.Sprintf("HTTP GET to URL %s", url), retries, sleepBetweenRetries, func() (string, error) {
-		return "", HttpGetWithValidationE(t, url, tlsConfig, expectedStatus, expectedBody)
+		return "", HttpGetWithValidationE(t, url, tlsConfig, expectedStatus)
 	})
 
 	return err
